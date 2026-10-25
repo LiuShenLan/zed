@@ -2173,6 +2173,11 @@ impl Window {
     /// Close this window.
     pub fn remove_window(&mut self) {
         self.removed = true;
+        // 输入处理器可持有视图强句柄；关窗后不再接收输入，必须同步释放，
+        // 不能等平台原生窗口的延迟销毁任务。
+        drop(self.platform_window.take_input_handler());
+        self.rendered_frame.input_handlers.clear();
+        self.next_frame.input_handlers.clear();
     }
 
     /// Obtain the currently focused [`FocusHandle`]. If no elements are focused, returns `None`.
