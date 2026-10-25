@@ -210,10 +210,9 @@ pub fn img(source: impl Into<ImageSource>) -> Img {
 impl Img {
     /// A list of all format extensions currently supported by this img element
     pub fn extensions() -> &'static [&'static str] {
-        // This is the list in [image::ImageFormat::from_extension] + `svg`
+        // 与 image 解码 feature 集保持一致，另加独立 SVG 渲染。
         &[
-            "avif", "jpg", "jpeg", "png", "gif", "webp", "tif", "tiff", "tga", "dds", "bmp", "ico",
-            "hdr", "exr", "pbm", "pam", "ppm", "pgm", "ff", "farbfeld", "qoi", "svg",
+            "avif", "jpg", "jpeg", "png", "gif", "webp", "bmp", "ico", "svg",
         ]
     }
 
@@ -833,6 +832,16 @@ mod tests {
                 });
             },
         )
+    }
+
+    #[test]
+    fn image_extensions_match_product_decoder_baseline() {
+        assert_eq!(
+            Img::extensions(),
+            &[
+                "avif", "jpg", "jpeg", "png", "gif", "webp", "bmp", "ico", "svg"
+            ]
+        );
     }
 
     #[gpui::test]

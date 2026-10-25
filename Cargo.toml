@@ -638,23 +638,14 @@ http-body = "1.0"
 httparse = "1.10"
 idna = "1.0"
 ignore = "0.4.22"
-# image's default features minus "avif", which only adds an encoder (rav1e);
-# decoding AVIF would additionally need the non-default "avif-native" feature.
+# 只保留 slTerminal 使用的解码器；AVIF 走 dav1d，不引入编码器或 rayon。
 image = { version = "0.25.1", default-features = false, features = [
+    "avif-native",
     "bmp",
-    "dds",
-    "exr",
-    "ff",
     "gif",
-    "hdr",
     "ico",
     "jpeg",
     "png",
-    "pnm",
-    "qoi",
-    "rayon",
-    "tga",
-    "tiff",
     "webp",
 ] }
 imara-diff = "0.2.0"
